@@ -23,17 +23,18 @@ public final class CclUnitRecordFactory {
          * Build the request record structure
          */
         final Structure requestPrograms = StructureBuilder.getBuilder().addVC("programName").addI2("compile").build();
-        REQUEST_STRUCTURE = StructureBuilder.getBuilder().addVC("testINCName")
+        REQUEST_STRUCTURE = StructureBuilder.getBuilder().addVC("testCaseDirectory").addVC("testCaseFileName")
+        		.addVC("testNamePattern")
                 .addDynamicList("programs", requestPrograms).addVC("optimizerMode").addI2("enforcePredeclare")
-                .addVC("deprecatedFlag").addVC("testSubroutineName").build();
+                .addVC("deprecatedFlag").addI2("legacyResultsFormat").build();
 
         /*
          * Build the reply record structure
          */
         final Structure replyPrograms = StructureBuilder.getBuilder().addVC("programName").addVC("listingXML")
                 .addVC("coverageXML").build();
-        REPLY_STRUCTURE = StructureBuilder.getBuilder().addVC("environmentXML").addVC("testINCListingXML")
-                .addVC("testINCCoverageXML").addVC("testINCResultsXML").addDynamicList("programs", replyPrograms)
+        REPLY_STRUCTURE = StructureBuilder.getBuilder().addVC("environmentXML").addVC("listingXml")
+                .addVC("coverageXml").addVC("resultsXml").addDynamicList("programs", replyPrograms)
                 .addStatusData().build();
 
     }

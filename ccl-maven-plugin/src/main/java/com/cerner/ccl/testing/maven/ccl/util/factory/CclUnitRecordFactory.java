@@ -24,18 +24,16 @@ public final class CclUnitRecordFactory {
          */
         final Structure requestPrograms = StructureBuilder.getBuilder().addVC("programName").addI2("compile").build();
         REQUEST_STRUCTURE = StructureBuilder.getBuilder().addVC("testCaseDirectory").addVC("testCaseFileName")
-        		.addVC("testNamePattern")
-                .addDynamicList("programs", requestPrograms).addVC("optimizerMode").addI2("enforcePredeclare")
-                .addVC("deprecatedFlag").addI2("legacyResultsFormat").build();
+                .addVC("testNamePattern").addDynamicList("programs", requestPrograms).addVC("optimizerMode")
+                .addI2("enforcePredeclare").addVC("deprecatedFlag").addI2("legacyResultsFormat").build();
 
         /*
          * Build the reply record structure
          */
         final Structure replyPrograms = StructureBuilder.getBuilder().addVC("programName").addVC("listingXML")
                 .addVC("coverageXML").build();
-        REPLY_STRUCTURE = StructureBuilder.getBuilder().addVC("environmentXML").addVC("listingXml")
-                .addVC("coverageXml").addVC("resultsXml").addDynamicList("programs", replyPrograms)
-                .addStatusData().build();
+        REPLY_STRUCTURE = StructureBuilder.getBuilder().addVC("environmentXML").addVC("listingXml").addVC("coverageXml")
+                .addVC("resultsXml").addDynamicList("programs", replyPrograms).addStatusData().build();
 
     }
 
@@ -72,11 +70,13 @@ public final class CclUnitRecordFactory {
      * @param testSubroutineName
      *            The optional name of the test subroutine to be executed. If {@code null}, then no test subroutine name
      *            will be set.
+     * @param testCaseDirectory
+     *            An optional name of the directory to upload tests. It is CCLSOURCE by default.
      * @return A {@link Record} object representing the request record structure.
      */
     public static Record createRequest(final List<String> scriptNames, final String testIncludeName,
             final boolean compileScripts, final String optimizerMode, final boolean enforcePredeclare,
-            final String deprecatedFlag, final String testSubroutineName) {
+            final String deprecatedFlag, final String testSubroutineName, final String testCaseDirectory) {
         final Record request = buildRequest();
 
         final DynamicRecordList programs = request.getDynamicList("programs");
@@ -87,16 +87,17 @@ public final class CclUnitRecordFactory {
             program.setI2("compile", compileScripts);
         }
 
-        request.setVC("testINCName", testIncludeName);
+        request.setVC("testCaseFileName", testIncludeName);
 
         if (optimizerMode != null)
             request.setVC("optimizerMode", optimizerMode);
 
         request.setI2("enforcePredeclare", enforcePredeclare);
         request.setVC("deprecatedFlag", deprecatedFlag);
+        request.setVC("testCaseDirectory", testCaseDirectory);
 
         if (testSubroutineName != null)
-            request.setVC("testSubroutineName", testSubroutineName);
+            request.setVC("testNamePattern", testSubroutineName);
 
         return request;
     }

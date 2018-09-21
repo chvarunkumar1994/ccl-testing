@@ -44,7 +44,7 @@ public class TestMojo extends BaseCclMojo {
     /**
      * Entry point for the CCLUnit framework
      */
-    private static final String CCL_UNIT_PROGRAM = "cclut_execute_test_case";
+    private static final String CCL_UNIT_PROGRAM = "cclut_execute_test_case_file";
 
     /**
      * The location within the project directory where the main CCL program file(s) can be found
@@ -131,6 +131,14 @@ public class TestMojo extends BaseCclMojo {
      */
     @Parameter(property = "ccl-deprecatedFlag", defaultValue = "E")
     protected String deprecatedFlag;
+
+    /**
+     * Configure the CCL Testing Framework to upload the test files to this directory.
+     *
+     * @since 3.0
+     */
+    @Parameter(property = "ccl-testCaseDirectory", defaultValue = "CCLUSERDIR")
+    protected String testCaseDirectory;
 
     /**
      * Configure the plugin to fail the maven build if any of the CCL unit tests fail.
@@ -250,7 +258,7 @@ public class TestMojo extends BaseCclMojo {
         for (final File testFile : testSources) {
             final Record request = CclUnitRecordFactory.createRequest(scriptNames, testFile.getName(),
                     testSources.indexOf(testFile) == 0, optimizerMode, enforcePredeclare, deprecatedFlag,
-                    testSubroutineName);
+                    testSubroutineName, testCaseDirectory);
             final Record reply = CclUnitRecordFactory.createReply();
 
             if (isDebugging()) {

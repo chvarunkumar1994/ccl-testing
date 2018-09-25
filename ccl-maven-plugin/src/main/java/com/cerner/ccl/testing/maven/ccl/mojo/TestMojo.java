@@ -137,7 +137,7 @@ public class TestMojo extends BaseCclMojo {
      *
      * @since 3.0
      */
-    @Parameter(property = "ccl-testCaseDirectory", defaultValue = "CCLUSERDIR")
+    @Parameter(property = "ccl-testCaseDirectory", defaultValue = "CCLSOURCE")
     protected String testCaseDirectory;
 
     /**
